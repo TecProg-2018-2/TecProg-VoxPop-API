@@ -1,0 +1,11 @@
+Django
+djangorestframework
+django-rest-swagger
+psycopg2
+gunicorn
+pylint
+django-cors-headers
+django-celery-beat
+redis
+coverage
+django-rest-framework-social-oauth2
