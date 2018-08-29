@@ -1,4 +1,4 @@
-# VoxPop - WebApp
+# VoxPop - API
 
 <img src="https://sonarcloud.io/api/project_badges/measure?project=tecprog-api&metric=alert_status"> <img src="https://sonarcloud.io/api/project_badges/measure?project=tecprog-api&metric=bugs"> <img src="https://sonarcloud.io/api/project_badges/measure?project=tecprog-api&metric=duplicated_lines_density"> <img src="https://sonarcloud.io/api/project_badges/measure?project=tecprog-api&metric=ncloc">
 
