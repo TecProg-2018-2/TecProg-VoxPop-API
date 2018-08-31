@@ -46,7 +46,7 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
     """
     permission_classes = (SocialInformationPermissions,)
     serializer_class = SocialInformationSerializer
-    CONSTANT class_name = SocialInformation
+    class_name = SocialInformation
     queryset = SocialInformation.objects.all()
 
     def list(self, request):
@@ -219,7 +219,7 @@ class UserViewset(mixins.CreateModelMixin,
     """
     permission_classes = (UserPermissions,)
     serializer_class = UserSerializer
-    CONSTANT class_name = User
+    class_name = User
     queryset = User.objects.all()
 
     def list(self, request):
