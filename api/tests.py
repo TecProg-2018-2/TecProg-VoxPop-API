@@ -7,8 +7,6 @@ from rest_framework.test import APIRequestFactory, APITestCase
 from .views import SocialInformationViewset, UserViewset, ContactUsViewset
 from  rest_framework import serializers, status
 from django.utils.translation import ugettext_lazy as _
-# Create your tests here.
-
 
 class UserTests(APITestCase):
 
@@ -32,7 +30,6 @@ class UserTests(APITestCase):
             owner=self.user
         )
         self.url = '/api/users/'
-        # self.client.force_login(self.user)
         self.client.force_authenticate(self.superuser)
 
     def tearDown(self):
@@ -94,8 +91,6 @@ class UserTests(APITestCase):
             'password':'teste'
         }
         response = self.client.put(self.url + str(self.user.pk) + '/', data)
-
-
         new_user = User.objects.get(pk=self.user.pk)
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
         self.assertEquals(
@@ -185,12 +180,10 @@ class SocialInformationTests(APITestCase):
             "birth_date": ""
         }
         response = None
-
         try:
             response = self.client.post(self.url, data)
         except AttributeError:
             pass
-
         self.assertIsNone(response)
 
     def test_update_social(self):
@@ -208,7 +201,6 @@ class SocialInformationTests(APITestCase):
             "birth_date": ""
         }
         response = self.client.put(self.url + str(self.social.pk) + '/', data)
-
         new_social = SocialInformation.objects.get(pk=self.social.pk)
         self.assertEqual(response.status_code,  status.HTTP_200_OK)
         self.assertEqual(new_social.region, 'N')
