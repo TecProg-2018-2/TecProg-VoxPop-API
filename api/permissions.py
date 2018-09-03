@@ -1,12 +1,18 @@
+# rest_framework
 from rest_framework import permissions
 
+# models
 from .models import SocialInformation
 
 
 class UserPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        permission = False
+        """
+        Método para configurar permissões.
+        Configuração feita de acordo com a resposta obtida na requisição.
+        """
+        permission_classes = False
         authorized_user = False
 
         if request.user.is_superuser:
@@ -27,15 +33,19 @@ class UserPermissions(permissions.BasePermission):
                 return True
 
         else:
-            permission = True
+            permission_classes = True
 
-        return permission
+        return permission_classes
 
 
 class SocialInformationPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        permission = False
+        """
+        Método para configurar permissões.
+        Configuração feita de acordo com a resposta obtida na requisição.
+        """
+        permission_classes = False
         authorized_user = False
 
         if request.user.is_superuser:
@@ -65,6 +75,6 @@ class SocialInformationPermissions(permissions.BasePermission):
                 return True
 
         else:
-            permission = True
+            permission_classes = True
 
-        return permission
+        return permission_classes
