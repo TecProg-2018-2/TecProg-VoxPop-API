@@ -8,13 +8,15 @@ from celery import task
 import requests
 
 
-def __get_credentials():
+def get_credentials():
+    """
+    Get user grendentials from file to make the request in an API.
+    """
     with open('.loader_credentials.json', 'r') as f:
-        read_data = f.read()
+        file_data = json.loads(f.read())
 
-    read_data = json.loads(read_data)
-    username = read_data['username']
-    password = read_data['password']
+    username = file_data['username']
+    password = file_data['password']
 
     utf_8_authorization = "{username}:{password}".format(
         username=username, password=password
@@ -25,29 +27,35 @@ def __get_credentials():
 
 @task()
 def get_parliamentarians():
+    """
+    Get the data of the parliamentarians from a private api.
+    """
     url = "http://loader:3500/"
-    data = "{\n\"task\": \"get_parliamentarians\"\n}"
+    request_body = "{\n\"task\": \"get_parliamentarians\"\n}"
 
     requests.post(
         url=url,
-        data=data,
+        data=request_body,
         headers={
             "content-type": "application/json",
-            "Authorization": __get_credentials()
+            "Authorization": get_credentials()
         }
     )
 
 
 @task()
 def get_propositions():
+    """
+    Get the data of the proposals of the parliamentarians of a private api.
+    """
     url = "http://loader:3500/"
-    data = "{\n\"task\": \"get_propositions\"\n}"
+    request_body = "{\n\"task\": \"get_propositions\"\n}"
 
     requests.post(
         url=url,
-        data=data,
+        data=request_body,
         headers={
             "content-type": "application/json",
-            "Authorization": __get_credentials()
+            "Authorization": get_credentials()
         }
     )
