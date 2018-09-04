@@ -2,18 +2,18 @@ import json
 from base64 import b64encode
 from datetime import datetime
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from django.db.models import Count, Q
-from django.utils import timezone
-
 from rest_framework import mixins, status, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+from django.db.models import Count, Q
+from django.utils import timezone
 
 from .models import (
     ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
