@@ -167,7 +167,7 @@ class CompatibilitySerializer(serializers.ModelSerializer):
             'compatibility'
         ]
 
-class ContactSerializer(serializers.ModelSerializer):
+class ContactUsSerializer(serializers.ModelSerializer):
 # Contact with the responsibles, sending data to a formulary.
 
     class Meta:
