@@ -2,8 +2,8 @@
 *********************************************************************
 * File: admin.py
 * Purpose: ExtendedUserAdmin,ParliamentaryAdmin, ParliamentaryVoteAdmin,
-*   PropositionAdmin, SocialInformationAdmin,UserFollowingAdmin,
-*   UserVoteAdmin, ContactUsAdmin class implementation
+*          PropositionAdmin, SocialInformationAdmin,UserFollowingAdmin,
+*          UserVoteAdmin, ContactUsAdmin class implementation
 * Notice: All rights reserved.
 * Description File: Registering a models with the admin site.
 ***********************************************************************/
