@@ -40,9 +40,9 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
                                mixins.ListModelMixin,
                                mixins.UpdateModelMixin,
                                viewsets.GenericViewSet):
-    """Description: SocialInformationViewset.
+    """
     API endpoint that allows social information
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     permission_classes = (SocialInformationPermissions,)
     serializer_class = SocialInformationSerializer
@@ -51,7 +51,7 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def list(self, request):
         """
-          API endpoint that allows all social information to be viewed.
+        API endpoint that allows all social information to be viewed.
           ---
           Response example:
           ```
@@ -83,7 +83,7 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def create(self, request):
         """
-          API endpoint that allows all social information to be created.
+        API endpoint that allows all social information to be created.
           ---
           Body example:
           ```
