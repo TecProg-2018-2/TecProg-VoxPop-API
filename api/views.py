@@ -529,6 +529,9 @@ class LoaderViewSet(ViewSet):
 
     @classmethod
     def __get_credentials(cls):
+        """
+        Obtain the credentials for user on json and decode them
+        """
         with open('.loader_credentials.json', 'r') as f:
             read_data = f.read()
 
@@ -544,6 +547,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['get'])
     def get_parliamentarians(self, request):
+        """
+        Obtain the list of parlamentarians if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             parliamentary_ids = []
@@ -562,6 +568,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_parliamentary(self, request):
+        """
+        Create the parlamentarian if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             parliamentary_dict = request.data.dict()
@@ -579,6 +588,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['get'])
     def get_propositions(self, request):
+         """
+        Obtain the list of propositions if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
 
@@ -607,6 +619,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_proposition(self, request):
+        """
+        Create the proposition if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             proposition_dict = request.data.dict()
@@ -630,6 +645,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_vote(self, request):
+         """
+        Create the vote if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
 
