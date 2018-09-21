@@ -1,7 +1,25 @@
+"""
+*********************************************************************
+* File: views.py
+* Purpose: SocialInformationViewset, UserViewset, LoaderViewSet,
+*           ParliamentaryViewset, PropositionViewSet, UserVoteViewset,
+*          CustomObtainToken, UserFollowingViewSet, StatisticViewset and
+*          ContactUsViewSet class implementation
+* Notice: All rights reserved.
+* Description File: Configures apps views.
+***********************************************************************/
+"""
+
+# json
 import json
+
+# base64
 from base64 import b64encode
+
+# datetime
 from datetime import datetime
 
+# rest_framework
 from rest_framework import mixins, status, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import list_route, detail_route
@@ -9,22 +27,28 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+# django
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Count, Q
 from django.utils import timezone
 
+# models
 from .models import (
     ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
     SocialInformation, UserFollowing, UserVote, ContactUs
 )
+
+# permissions 
 from .permissions import SocialInformationPermissions, UserPermissions
 from .serializers import (
     CompatibilitySerializer, ParliamentarySerializer, PropositionSerializer,
     SocialInformationSerializer, UserFollowingSerializer, UserSerializer,
     UserVoteSerializer, ContactUsSerializer
 )
+
+# utils
 from .utils import (
     parliamentarians_filter,
     propositions_filter,
