@@ -3,7 +3,6 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
-
 # Create your models here.
 REGION_CHOICES = (
     (None, 'Null'),
@@ -117,16 +116,41 @@ class SocialInformation(models.Model):
 class Parliamentary(models.Model):
 
     # parliamentary_id  is getted from camara's API parliamentary ID
-    parliamentary_id = models.CharField(max_length=100, unique=True)
-    name = models.CharField(max_length=100)
-    gender = \
-        models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
-    political_party = models.CharField(max_length=100, blank=True)
-    federal_unit = models.CharField(max_length=100, blank=True)
-    birth_date = models.CharField(max_length=15, blank=True)
-    education = models.CharField(max_length=150, default='N')
-    email = models.CharField(max_length=100, blank=True)
-    photo = models.URLField(blank=True)
+    parliamentary_id = models.CharField(
+        max_length=100,
+        unique=True
+    )
+    name = models.CharField(
+        max_length=100
+    )
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER_CHOICES,
+        blank=True
+    )
+    political_party = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    federal_unit = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    birth_date = models.CharField(
+        max_length=15,
+        blank=True
+    )
+    education = models.CharField(
+        max_length=150,
+        default='N'
+    )
+    email = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    photo = models.URLField(
+        blank=True
+    )
 
     def __str__(self):
         return '{name}'.format(name=self.name)
@@ -138,21 +162,45 @@ class Parliamentary(models.Model):
 
 class Proposition(models.Model):
 
-    native_id = models.CharField(max_length=100, unique=True)
-    proposition_type = models.CharField(max_length=100, blank=True)
-    proposition_type_initials = models.CharField(max_length=20, blank=True)
-    number = models.IntegerField(blank=True)
-    year = models.IntegerField(blank=True)
-    abstract = models.TextField(max_length=2000, blank=True)
-    processing = models.CharField(max_length=100, blank=True)
-    situation = models.CharField(max_length=100, blank=True)
-    url_full = models.URLField(blank=True)
-    last_update = models.DateTimeField(blank=True)
+    native_id = models.CharField(
+        max_length=100,
+        unique=True
+    )
+    proposition_type = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    proposition_type_initials = models.CharField(
+        max_length=20,
+        blank=True
+    )
+    number = models.IntegerField(
+        blank=True
+    )
+    year = models.IntegerField(
+        blank=True
+    )
+    abstract = models.TextField(
+        max_length=2000,
+        blank=True
+    )
+    processing = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    situation = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    url_full = models.URLField(
+        blank=True
+    )
+    last_update = models.DateTimeField(
+        blank=True
+    )
 
     def __str__(self):
-        return 'Proposition {native_id}'.format(
-            native_id=self.native_id
-        )
+        return 'Proposition {native_id}'.format(native_id=self.native_id)
 
     class Meta:
         verbose_name = "Proposition"
@@ -237,9 +285,15 @@ class Compatibility(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='user_compatibilities'
     )
-    valid_votes = models.IntegerField(blank=True)
-    matching_votes = models.IntegerField(blank=True)
-    compatibility = models.FloatField(blank=True)
+    valid_votes = models.IntegerField(
+        blank=True
+    )
+    matching_votes = models.IntegerField(
+        blank=True
+    )
+    compatibility = models.FloatField(
+        blank=True
+    )
 
     class Meta:
         verbose_name = "Compatibility"
@@ -253,7 +307,9 @@ class ExtendedUser(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='extended_user'
     )
-    should_update = models.BooleanField(default=True)
+    should_update = models.BooleanField(
+        default=True
+    )
 
     class Meta:
         verbose_name = "Extended User"
@@ -261,14 +317,21 @@ class ExtendedUser(models.Model):
 
 
 class ContactUs(models.Model):
-    topic = models.CharField(max_length=150)
-    email = models.EmailField(max_length=250, blank=True)
+    topic = models.CharField(
+        max_length=150
+    )
+    email = models.EmailField(
+        max_length=250,
+        blank=True
+    )
     choice = models.CharField(
         max_length=1,
         choices=CONTACT_CHOICES,
         default='A'
     )
-    text = models.CharField(max_length=500)
+    text = models.CharField(
+        max_length=500
+    )
 
     class Meta:
         verbose_name = "Contact Us"

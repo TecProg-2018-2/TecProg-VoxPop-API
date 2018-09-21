@@ -1,7 +1,9 @@
+# models
 from .models import (
-    ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
-    SocialInformation, UserFollowing, UserVote, ContactUs
+    ContactUs, ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
+    SocialInformation, UserFollowing, UserVote, 
 )
+# django
 from django.contrib import admin
 
 

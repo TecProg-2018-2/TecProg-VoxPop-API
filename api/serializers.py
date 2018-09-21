@@ -1,13 +1,16 @@
+from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+
+from django.contrib.auth.models import User
+
 from .models import (
     Compatibility, ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
     SocialInformation, UserFollowing, UserVote, ContactUs
 )
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
-
 
 class SocialInformationSerializer(serializers.ModelSerializer):
+#Model social informations about the user.
+
     class Meta:
         model = SocialInformation
         fields = [
@@ -21,8 +24,11 @@ class SocialInformationSerializer(serializers.ModelSerializer):
             'birth_date',
         ]
 
-
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Models relation between social informations adding user informations
+    to use as a user id.
+    """
     social_information = SocialInformationSerializer(read_only=True)
 
     class Meta:
@@ -44,6 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+    #Create voxpopuser, validating its data.
         voxpopuser = User(**validated_data)
         password = validated_data['password']
         voxpopuser.set_password(password)
@@ -55,7 +62,7 @@ class UserSerializer(serializers.ModelSerializer):
         return voxpopuser
 
     def update(self, instance, validated_data):
-
+    #Update user, validating its data.
         updated_user = vars(instance)
         del updated_user['_state']
         for field, value in validated_data.items():
@@ -69,8 +76,9 @@ class UserSerializer(serializers.ModelSerializer):
 
         return updated
 
-
 class ParliamentarySerializer(serializers.ModelSerializer):
+#Models datas about the parliamentarians.
+
     class Meta:
         model = Parliamentary
         fields = [
@@ -86,8 +94,9 @@ class ParliamentarySerializer(serializers.ModelSerializer):
             'photo'
         ]
 
-
 class PropositionSerializer(serializers.ModelSerializer):
+#Models propositions related to the parliamentarians.
+
     class Meta:
         model = Proposition
         fields = [
@@ -104,8 +113,9 @@ class PropositionSerializer(serializers.ModelSerializer):
             'last_update'
         ]
 
-
 class UserVoteSerializer(serializers.ModelSerializer):
+#Models option vote for the user.
+
     class Meta:
         model = UserVote
         fields = [
@@ -115,8 +125,9 @@ class UserVoteSerializer(serializers.ModelSerializer):
             'option'
         ]
 
-
 class ParliamentaryVoteSerializer(serializers.ModelSerializer):
+#Models option vote for the parliamentary.
+
     class Meta:
         model = ParliamentaryVote
         fields = [
@@ -126,8 +137,9 @@ class ParliamentaryVoteSerializer(serializers.ModelSerializer):
             'option'
         ]
 
-
 class UserFollowingSerializer(serializers.ModelSerializer):
+#Models relation of the parliamentarians and users.
+
     class Meta:
         model = UserFollowing
         fields = [
@@ -141,8 +153,8 @@ class UserFollowingSerializer(serializers.ModelSerializer):
             },
         }
 
-
 class CompatibilitySerializer(serializers.ModelSerializer):
+#Study about datas with the votes and the compatibility with the user.
     parliamentary = ParliamentarySerializer(many=False)
 
     class Meta:
@@ -155,8 +167,9 @@ class CompatibilitySerializer(serializers.ModelSerializer):
             'compatibility'
         ]
 
-
 class ContactUsSerializer(serializers.ModelSerializer):
+# Contact with the responsibles, sending data to a formulary.
+
     class Meta:
         model = ContactUs
         fields = [
