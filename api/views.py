@@ -690,13 +690,24 @@ class LoaderViewSet(ViewSet):
 class ParliamentaryViewset(mixins.RetrieveModelMixin,
                            mixins.ListModelMixin,
                            viewsets.GenericViewSet):
+    """
+    Description: ParliamentaryViewSet.
+    API endpoint that allows parliamentary
+    to be viewed, created, deleted or edited.
+    """
     serializer_class = ParliamentarySerializer
 
     def get_queryset(self):
+        """
+        Obtain a list of parliamentary objects
+        """
         queryset = Parliamentary.objects.all()
         return parliamentarians_filter(self, queryset)
 
     def list(self, request):
+        """
+        Set how the list of parliamentary will be shown
+        """
         response = super(ParliamentaryViewset, self).list(request)
 
         if request.user.is_authenticated:
@@ -716,6 +727,9 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
         return response
 
     def retrieve(self, request, pk=None):
+        """
+        Set how the list of parliamentary will be shown
+        """
         response = super(ParliamentaryViewset, self).retrieve(request, pk)
 
         if request.user.is_authenticated:
