@@ -695,12 +695,14 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
     API endpoint that allows parliamentary
     to be viewed, created, deleted or edited.
     """
+
     serializer_class = ParliamentarySerializer
 
     def get_queryset(self):
         """
         Obtain a list of parliamentary objects
         """
+
         queryset = Parliamentary.objects.all()
         return parliamentarians_filter(self, queryset)
 
@@ -708,6 +710,7 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
         """
         Set how the list of parliamentary will be shown
         """
+
         response = super(ParliamentaryViewset, self).list(request)
 
         if request.user.is_authenticated:
@@ -797,13 +800,27 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
 class PropositionViewset(mixins.RetrieveModelMixin,
                          mixins.ListModelMixin,
                          viewsets.GenericViewSet):
+    """
+    Description: PropositionViewSet.
+    API endpoint that allows Proposition
+    to be viewed, created, deleted or edited.
+    """
+
     serializer_class = PropositionSerializer
 
     def get_queryset(self):
+        """
+        Obtain a list of propositions objects
+        """
+
         queryset = Proposition.objects.all().order_by('-last_update')
         return propositions_filter(self, queryset)
 
     def list(self, request):
+        """
+        Set how the list of propositions will be shown
+        """
+
         response = super(PropositionViewset, self).list(request)
 
         for proposition in response.data['results']:
@@ -837,6 +854,9 @@ class PropositionViewset(mixins.RetrieveModelMixin,
         return response
 
     def retrieve(self, request, pk=None):
+        """
+        Set how the list of parliamentary will be configured
+        """
         response = super(PropositionViewset, self).retrieve(request, pk)
 
         parliamentarians_total_votes = ParliamentaryVote.objects.filter(
@@ -1013,7 +1033,9 @@ class PropositionViewset(mixins.RetrieveModelMixin,
 
     @detail_route(methods=['get'])
     def social_information_data(self, request, pk):
-
+        """
+        Returns all propositions according with your data.
+        """
         response = dict()
 
         parliamentarians_total_votes = ParliamentaryVote.objects.filter(
