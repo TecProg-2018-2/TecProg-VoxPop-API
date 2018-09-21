@@ -64,9 +64,10 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
                                mixins.ListModelMixin,
                                mixins.UpdateModelMixin,
                                viewsets.GenericViewSet):
-    """Description: SocialInformationViewset.
+    """
+    Description: SocialInformationViewset.
     API endpoint that allows social information
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     permission_classes = (SocialInformationPermissions,)
     serializer_class = SocialInformationSerializer
@@ -75,43 +76,43 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def list(self, request):
         """
-          API endpoint that allows all social information to be viewed.
-          ---
-          Response example:
-          ```
-            [
-                {
-                    "id": 3,
-                    "owner": 1,
-                    "federal_unit": "AC",
-                    "city": "Rio Branco",
-                    "income": "1200.00",
-                    "education": "EFC",
-                    "job": "Student",
-                    "birth_date": "2000-04-06"
-                },
-                {
-                    "id": 4,
-                    "owner": 2,
-                    "federal_unit": "AC",
-                    "city": "Rio Branco",
-                    "income": "3400.00",
-                    "education": "EFC",
-                    "job": "Software Engineer",
-                    "birth_date": "1980-04-06"
-                }
-            ]
-          ```
+        API endpoint that allows all social information to be viewed.
+        ---
+        Response example:
+        ```
+        [
+            {
+                "id": 3,
+                "owner": 1,
+                "federal_unit": "AC",
+                "city": "Rio Branco",
+                "income": "1200.00",
+                "education": "EFC",
+                "job": "Student",
+                "birth_date": "2000-04-06"
+            },
+            {
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "Rio Branco",
+                "income": "3400.00",
+                "education": "EFC",
+                "job": "Software Engineer",
+                "birth_date": "1980-04-06"
+            }
+        ]
+        ```
         """
         return super(SocialInformationViewset, self).list(request)
 
     def create(self, request):
         """
-          API endpoint that allows all social information to be created.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows all social information to be created.
+        ---
+        Body example:
+        ```
+        {
             "owner": 2,
             "federal_unit": "AC",
             "city": "Rio Branco",
@@ -119,11 +120,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "AC",
@@ -132,8 +133,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
+        }
+        ```
         """
         return super(SocialInformationViewset, self).create(request)
 
@@ -167,17 +168,17 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def partial_update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be partial edited.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows a social information to be partial edited.
+        ---
+        Body example:
+        ```
+        {
             "income": "3700.00",
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "AC",
@@ -186,8 +187,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
+        }
+        ```
         """
         response = super(SocialInformationViewset, self).partial_update(
             request,
@@ -197,11 +198,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be edited.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows a social information to be edited.
+        ---
+        Body example:
+        ```
+        {
             "owner": 2,
             "federal_unit": "GO",
             "city": "Luziânia",
@@ -209,11 +210,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "ESC",
             "job": "Software Engineer",
             "birth_date": "1989-04-06"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "GO",
@@ -222,8 +223,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "ESC",
             "job": "Software Engineer",
             "birth_date": "1989-04-06"
-          }
-          ```
+        }
+        ```
         """
         response = super(SocialInformationViewset, self).update(
             request,
@@ -237,9 +238,10 @@ class UserViewset(mixins.CreateModelMixin,
                   mixins.ListModelMixin,
                   mixins.UpdateModelMixin,
                   viewsets.GenericViewSet):
-    """Description: UserViewset.
+    """
+    Description: UserViewset.
     API endpoint that allows user
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     permission_classes = (UserPermissions,)
     serializer_class = UserSerializer
@@ -248,22 +250,22 @@ class UserViewset(mixins.CreateModelMixin,
 
     def list(self, request):
         """
-          API endpoint that allows all user to be viewed.
-          ---
-          Response example:
+        API endpoint that allows all user to be viewed.
+        ---
+        Response example:
           ```
-            {
+        {
             "count": 2,
             "next": null,
             "previous": null,
             "results": [
                 {
-                  "id": 1,
-                  "username": "string",
-                  "first_name": "string",
-                  "last_name": "string",
-                  "email": "string@teste.com",
-                  "social_information": {
+                "id": 1,
+                "username": "string",
+                "first_name": "string",
+                "last_name": "string",
+                "email": "string@teste.com",
+                "social_information": {
                     "id": 3,
                     "owner": 1,
                     "federal_unit": "AC",
@@ -272,15 +274,15 @@ class UserViewset(mixins.CreateModelMixin,
                     "education": "EFC",
                     "job": "Student",
                     "birth_date": "2000-04-06"
-                  }
+                }
                 },
                 {
-                  "id": 2,
-                  "username": "test",
-                  "first_name": "test",
-                  "last_name": "test",
-                  "email": "teste@teste.com",
-                  "social_information": {
+                "id": 2,
+                "username": "test",
+                "first_name": "test",
+                "last_name": "test",
+                "email": "teste@teste.com",
+                "social_information": {
                     "id": 4,
                     "owner": 2,
                     "federal_unit": "AC",
@@ -289,7 +291,7 @@ class UserViewset(mixins.CreateModelMixin,
                     "education": "EFC",
                     "job": "34",
                     "birth_date": "2018-04-06"
-                  }
+                }
                 },
             ]
         }
@@ -299,33 +301,36 @@ class UserViewset(mixins.CreateModelMixin,
 
     def create(self, request):
         """
-          API endpoint that allows all user to be created.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows all user to be created.
+        ---
+        Body example:
+        ```
+        {
             "username": "topperson",
             "first_name": "top",
             "last_name": "silva",
             "email": "teste@teste.com"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "topperson",
             "first_name": "top",
             "last_name": "silva",
             "email": "teste@teste.com",
             "social_information": null
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).create(request)
 
         user = User.objects.get(username=request.data['username'])
 
+        """
+        Treats the case where social information id doesn't exists 
+        """
         try:
             social_information_data = request.data['social_information']
             if social_information_data.get('id'):
@@ -384,34 +389,34 @@ class UserViewset(mixins.CreateModelMixin,
 
     def partial_update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a user to be partial edited.
-          ---
-          Body example:
-          ```
-          {
-            "username": "vrum vrum",
-          }
-          ```
-          Response example:
-          ```
-          {
+        API endpoint that allows a user to be partial edited.
+        ---
+        Body example:
+        ```
+        {
+        "username": "vrum vrum",
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "vrum vrum",
             "first_name": "string",
             "last_name": "string",
             "email": "string@trs.com",
             "social_information": {
-              "id": 4,
-              "owner": 2,
-              "federal_unit": "AC",
-              "city": "34",
-              "income": "34.00",
-              "education": "EFC",
-              "job": "34",
-              "birth_date": "2018-04-06"
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "34",
+                "income": "34.00",
+                "education": "EFC",
+                "job": "34",
+                "birth_date": "2018-04-06"
             }
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).partial_update(
             request,
@@ -421,43 +426,46 @@ class UserViewset(mixins.CreateModelMixin,
 
     def update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be edited.
-          ---
-          Body example:
-          ```
-          {
-            "username": "vrum vrum",
-            "first_name": "andre",
-            "last_name": "string",
-            "email": "string@trs.com"
-          }
-          ```
-          Response example:
-          ```
-          {
+        API endpoint that allows a social information to be edited.
+        ---
+        Body example:
+        ```
+        {
+        "username": "vrum vrum",
+        "first_name": "andre",
+        "last_name": "string",
+        "email": "string@trs.com"
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "vrum vrum",
             "first_name": "andre",
             "last_name": "string",
             "email": "string@trs.com",
             "social_information": {
-              "id": 4,
-              "owner": 2,
-              "federal_unit": "AC",
-              "city": "34",
-              "income": "34.00",
-              "education": "EFC",
-              "job": "34",
-              "birth_date": "2018-04-06"
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "34",
+                "income": "34.00",
+                "education": "EFC",
+                "job": "34",
+                "birth_date": "2018-04-06"
             }
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).update(
             request,
             pk,
             **kwargs)
 
+        """
+        Treats the case where social information id doesn't exists 
+        """
         try:
             social_information_data = request.data['social_information']
             if social_information_data.get('id'):
@@ -482,9 +490,12 @@ class UserViewset(mixins.CreateModelMixin,
     @list_route(methods=['get'])
     def actual_user(self, request):
         """
-        Returns the actual user.
+        Returns the actual user logged.
         """
 
+        """
+        verify the credentials of user logged
+        """
         if request.user.is_authenticated:
             user = dict()
             user['id'] = request.user.id
