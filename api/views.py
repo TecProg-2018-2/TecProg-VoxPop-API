@@ -77,6 +77,33 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
     def list(self, request):
         """
         API endpoint that allows all social information to be viewed.
+          ---
+          Response example:
+          ```
+            [
+                {
+                    "id": 3,
+                    "owner": 1,
+                    "federal_unit": "AC",
+                    "city": "Rio Branco",
+                    "income": "1200.00",
+                    "education": "EFC",
+                    "job": "Student",
+                    "birth_date": "2000-04-06"
+                },
+                {
+                    "id": 4,
+                    "owner": 2,
+                    "federal_unit": "AC",
+                    "city": "Rio Branco",
+                    "income": "3400.00",
+                    "education": "EFC",
+                    "job": "Software Engineer",
+                    "birth_date": "1980-04-06"
+                }
+            ]
+          ```
+
         ---
         Response example:
         ```
@@ -109,6 +136,10 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
     def create(self, request):
         """
         API endpoint that allows all social information to be created.
+          ---
+          Body example:
+          ```
+          {
         ---
         Body example:
         ```
@@ -1098,9 +1129,10 @@ class PropositionViewset(mixins.RetrieveModelMixin,
 
         return Response(response, status=status.HTTP_200_OK)
 
-
 class UserVoteViewset(viewsets.ModelViewSet):
-
+    """
+    API endpoint that allows actions with the user vote.
+    """
     serializer_class = UserVoteSerializer
     queryset = UserVote.objects.all()
 
@@ -1114,6 +1146,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return user_votes_filter(self, queryset)
 
     def list(self, request):
+        """ Method that lists the votes and propositions with an previous analysis. """
         response = super(UserVoteViewset, self).list(request)
 
         for vote in response.data['results']:
@@ -1158,6 +1191,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def create(self, request):
+        """ Creates propositions. """
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1175,6 +1209,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def destroy(self, request, pk=None):
+        """ API endpoint that allows social information to be deleted. """
         extended_user = ExtendedUser.objects.get(user=request.user)
         if extended_user.should_update is False:
             extended_user.should_update = True
@@ -1184,6 +1219,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def retrieve(self, request, pk=None):
+        """ API endpoint that allows social information to be viewed. """
         response = super(UserVoteViewset, self).retrieve(request, pk)
 
         proposition = Proposition.objects.get(pk=response.data['proposition'])
@@ -1193,6 +1229,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def partial_update(self, request, pk=None, **kwargs):
+        """ API endpoint that allows a social information to be partial edited."""
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1208,6 +1245,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def update(self, request, pk=None, **kwargs):
+        """ API endpoint that allows a social information to be edited."""
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1229,7 +1267,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
 
 
 class CustomObtainToken(ObtainAuthToken):
-
+    """ Obtain the authentication token to make the referency to the user. """
     def post(self, request, *args, **kwargs):
         response = \
             super(CustomObtainToken, self).post(request, *args, **kwargs)
@@ -1252,6 +1290,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
     serializer_class = UserFollowingSerializer
     queryset = UserFollowing.objects.all().order_by('parliamentary')
 
+    """ Takes the query set and filters the users. """
     def get_queryset(self):
         if not self.request.user.is_anonymous:
             user = self.request.user
@@ -1261,6 +1300,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return user_following_filter(self, queryset)
 
+    """ Shows a list of the parliamentaries filtering by compatibility. """
     def list(self, request):
         response = super(UserFollowingViewset, self).list(request)
 
@@ -1284,6 +1324,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return response
 
+    """ Creates parliamentaries profiles, if it doesn't exists. """
     def create(self, request):
         try:
             user_id = request.user.id
@@ -1293,6 +1334,9 @@ class UserFollowingViewset(mixins.ListModelMixin,
                 user=request.user,
                 parliamentary__id=request.data['parliamentary']
             ):
+                """ The requester can only create profiles if it is authorized and
+                if the profile doesn't exists. 
+                """
                 response = {
                     'detail': 'Already exists.'
                 }
@@ -1312,6 +1356,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return response
 
+    """ Destroy a profile parliamentary, if it exists. """
     def destroy(self, request, pk=None):
         try:
             if UserFollowing.objects.filter(
@@ -1332,6 +1377,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
                 }
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
+        """ The requester must be authorized. """
         except (IntegrityError, TypeError):
             response = {
                 'detail': 'Anauthorized.'
@@ -1386,10 +1432,10 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_active(self, request):
-        """
-        Returns parliamentarians in votes count order.
-        """
-
+    """
+    Returns parliamentarians in votes count order.
+    """
+    
         most_active = ParliamentaryVote.objects.filter(
             Q(option='Y') | Q(option='N')
         ).values('parliamentary').annotate(
@@ -1414,9 +1460,9 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_followed(self, request):
-        """
-        Returns parliamentarians in followers count order.
-        """
+    """
+    Returns parliamentarians in followers count order.
+    """
 
         most_followed = Parliamentary.objects.values('id').annotate(
             followers=Count('followers')
@@ -1431,6 +1477,9 @@ class StatisticViewset(viewsets.GenericViewSet):
                 parliamentary_obj
             ).data
 
+        """
+        Returns the most followed parliamentary.
+        """
         paginator = LimitOffsetPagination()
 
         page = paginator.paginate_queryset(most_followed, request)
@@ -1441,9 +1490,9 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_compatible(self, request):
-        """
-        Returns parliamentarians in compatibility order.
-        """
+    """
+    Returns parliamentarians in compatibility order.
+    """
 
         extended_user = ExtendedUser.objects.get(user=request.user)
 
@@ -1478,37 +1527,37 @@ class StatisticViewset(viewsets.GenericViewSet):
 
 
 class ContactUsViewset(mixins.CreateModelMixin,
-                       viewsets.GenericViewSet):
-    """Description: ContactUsViewset.
+                     viewsets.GenericViewSet):
+    """ 
     API endpoint that allows contact us
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     serializer_class = ContactUsSerializer
     class_name = ContactUs
     queryset = ContactUs.objects.all()
 
     def create(self, request):
-        """
-            API endpoint that allows all 'contact us' to be created.
-            ---
-            Body example:
+    """
+    API endpoint that allows all 'contact us' to be created.
+        ---
+        Body example:
             ```
-                {
-                    "topic": "title",
-                    "email": "email@email.com",
-                    "choice": "A",
-                    "text": "message"
-                }
+            {
+            "topic": "title",
+            "email": "email@email.com",
+            "choice": "A",
+            "text": "message"
+            }
             ```
-            Response example:
+        Response example:
             ```
-                {
-                    "id": 1,
-                    "topic": "title",
-                    "email": "email@email.com",
-                    "choice": "A",
-                    "text": "message"
-                }
+            {
+            "id": 1,
+            "topic": "title",
+            "email": "email@email.com",
+            "choice": "A",
+            "text": "message"
+            }
             ```
-        """
+    """
         return super(ContactUsViewset, self).create(request)
