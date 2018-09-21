@@ -1,20 +1,35 @@
+"""
+*********************************************************************
+* File: permissions.py
+* Purpose: UserPermissions, SocialInformationPermissions
+*          class implementation
+* Notice: All rights reserved.
+* Description File: Configures permissions.
+***********************************************************************/
+"""
+
 # rest_framework
 from rest_framework import permissions
 
 # models
 from .models import SocialInformation
 
-
+"""
+Responsible class to configure 
+user permissions
+"""
 class UserPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         """
-        Método para configurar permissões.
-        Configuração feita de acordo com a resposta obtida na requisição.
+        Method for setting user permissions.
         """
         permission_classes = False
         authorized_user = False
 
+        """
+        Configuration made according to the response obtained in the request.
+        """
         if request.user.is_superuser:
             return True
 
@@ -37,17 +52,22 @@ class UserPermissions(permissions.BasePermission):
 
         return permission_classes
 
-
+"""
+Responsible class to configure 
+social information permissions
+"""
 class SocialInformationPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         """
-        Método para configurar permissões.
-        Configuração feita de acordo com a resposta obtida na requisição.
+        Method for setting social information permissions.
         """
         permission_classes = False
         authorized_user = False
 
+        """
+        Configuration made according to the response obtained in the request.
+        """
         if request.user.is_superuser:
             return True
 
