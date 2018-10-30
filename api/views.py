@@ -1,7 +1,25 @@
+"""
+*********************************************************************
+* File: views.py
+* Purpose: SocialInformationViewset, UserViewset, LoaderViewSet,
+*           ParliamentaryViewset, PropositionViewSet, UserVoteViewset,
+*          CustomObtainToken, UserFollowingViewSet, StatisticViewset and
+*          ContactUsViewSet class implementation
+* Notice: All rights reserved.
+* Description File: Configures apps views.
+***********************************************************************/
+"""
+
+# json
 import json
+
+# base64
 from base64 import b64encode
+
+# datetime
 from datetime import datetime
 
+# rest_framework
 from rest_framework import mixins, status, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import list_route, detail_route
@@ -9,22 +27,28 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+# django
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Count, Q
 from django.utils import timezone
 
+# models
 from .models import (
     ExtendedUser, Parliamentary, ParliamentaryVote, Proposition,
     SocialInformation, UserFollowing, UserVote, ContactUs
 )
+
+# permissions 
 from .permissions import SocialInformationPermissions, UserPermissions
 from .serializers import (
     CompatibilitySerializer, ParliamentarySerializer, PropositionSerializer,
     SocialInformationSerializer, UserFollowingSerializer, UserSerializer,
     UserVoteSerializer, ContactUsSerializer
 )
+
+# utils
 from .utils import (
     parliamentarians_filter,
     propositions_filter,
@@ -40,9 +64,10 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
                                mixins.ListModelMixin,
                                mixins.UpdateModelMixin,
                                viewsets.GenericViewSet):
-    """Description: SocialInformationViewset.
+    """
+    Description: SocialInformationViewset.
     API endpoint that allows social information
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     permission_classes = (SocialInformationPermissions,)
     serializer_class = SocialInformationSerializer
@@ -51,7 +76,7 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def list(self, request):
         """
-          API endpoint that allows all social information to be viewed.
+        API endpoint that allows all social information to be viewed.
           ---
           Response example:
           ```
@@ -78,16 +103,47 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
                 }
             ]
           ```
+
+        ---
+        Response example:
+        ```
+        [
+            {
+                "id": 3,
+                "owner": 1,
+                "federal_unit": "AC",
+                "city": "Rio Branco",
+                "income": "1200.00",
+                "education": "EFC",
+                "job": "Student",
+                "birth_date": "2000-04-06"
+            },
+            {
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "Rio Branco",
+                "income": "3400.00",
+                "education": "EFC",
+                "job": "Software Engineer",
+                "birth_date": "1980-04-06"
+            }
+        ]
+        ```
         """
         return super(SocialInformationViewset, self).list(request)
 
     def create(self, request):
         """
-          API endpoint that allows all social information to be created.
+        API endpoint that allows all social information to be created.
           ---
           Body example:
           ```
           {
+        ---
+        Body example:
+        ```
+        {
             "owner": 2,
             "federal_unit": "AC",
             "city": "Rio Branco",
@@ -95,11 +151,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "AC",
@@ -108,8 +164,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
+        }
+        ```
         """
         return super(SocialInformationViewset, self).create(request)
 
@@ -143,17 +199,17 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def partial_update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be partial edited.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows a social information to be partial edited.
+        ---
+        Body example:
+        ```
+        {
             "income": "3700.00",
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "AC",
@@ -162,8 +218,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "EFC",
             "job": "Software Engineer",
             "birth_date": "1980-04-06"
-          }
-          ```
+        }
+        ```
         """
         response = super(SocialInformationViewset, self).partial_update(
             request,
@@ -173,11 +229,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
 
     def update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be edited.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows a social information to be edited.
+        ---
+        Body example:
+        ```
+        {
             "owner": 2,
             "federal_unit": "GO",
             "city": "Luziânia",
@@ -185,11 +241,11 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "ESC",
             "job": "Software Engineer",
             "birth_date": "1989-04-06"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "owner": 2,
             "federal_unit": "GO",
@@ -198,8 +254,8 @@ class SocialInformationViewset(mixins.RetrieveModelMixin,
             "education": "ESC",
             "job": "Software Engineer",
             "birth_date": "1989-04-06"
-          }
-          ```
+        }
+        ```
         """
         response = super(SocialInformationViewset, self).update(
             request,
@@ -213,9 +269,10 @@ class UserViewset(mixins.CreateModelMixin,
                   mixins.ListModelMixin,
                   mixins.UpdateModelMixin,
                   viewsets.GenericViewSet):
-    """Description: UserViewset.
+    """
+    Description: UserViewset.
     API endpoint that allows user
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     permission_classes = (UserPermissions,)
     serializer_class = UserSerializer
@@ -224,22 +281,22 @@ class UserViewset(mixins.CreateModelMixin,
 
     def list(self, request):
         """
-          API endpoint that allows all user to be viewed.
-          ---
-          Response example:
+        API endpoint that allows all user to be viewed.
+        ---
+        Response example:
           ```
-            {
+        {
             "count": 2,
             "next": null,
             "previous": null,
             "results": [
                 {
-                  "id": 1,
-                  "username": "string",
-                  "first_name": "string",
-                  "last_name": "string",
-                  "email": "string@teste.com",
-                  "social_information": {
+                "id": 1,
+                "username": "string",
+                "first_name": "string",
+                "last_name": "string",
+                "email": "string@teste.com",
+                "social_information": {
                     "id": 3,
                     "owner": 1,
                     "federal_unit": "AC",
@@ -248,15 +305,15 @@ class UserViewset(mixins.CreateModelMixin,
                     "education": "EFC",
                     "job": "Student",
                     "birth_date": "2000-04-06"
-                  }
+                }
                 },
                 {
-                  "id": 2,
-                  "username": "test",
-                  "first_name": "test",
-                  "last_name": "test",
-                  "email": "teste@teste.com",
-                  "social_information": {
+                "id": 2,
+                "username": "test",
+                "first_name": "test",
+                "last_name": "test",
+                "email": "teste@teste.com",
+                "social_information": {
                     "id": 4,
                     "owner": 2,
                     "federal_unit": "AC",
@@ -265,7 +322,7 @@ class UserViewset(mixins.CreateModelMixin,
                     "education": "EFC",
                     "job": "34",
                     "birth_date": "2018-04-06"
-                  }
+                }
                 },
             ]
         }
@@ -275,33 +332,36 @@ class UserViewset(mixins.CreateModelMixin,
 
     def create(self, request):
         """
-          API endpoint that allows all user to be created.
-          ---
-          Body example:
-          ```
-          {
+        API endpoint that allows all user to be created.
+        ---
+        Body example:
+        ```
+        {
             "username": "topperson",
             "first_name": "top",
             "last_name": "silva",
             "email": "teste@teste.com"
-          }
-          ```
-          Response example:
-          ```
-          {
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "topperson",
             "first_name": "top",
             "last_name": "silva",
             "email": "teste@teste.com",
             "social_information": null
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).create(request)
 
         user = User.objects.get(username=request.data['username'])
 
+        """
+        Treats the case where social information id doesn't exists 
+        """
         try:
             social_information_data = request.data['social_information']
             if social_information_data.get('id'):
@@ -360,34 +420,34 @@ class UserViewset(mixins.CreateModelMixin,
 
     def partial_update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a user to be partial edited.
-          ---
-          Body example:
-          ```
-          {
-            "username": "vrum vrum",
-          }
-          ```
-          Response example:
-          ```
-          {
+        API endpoint that allows a user to be partial edited.
+        ---
+        Body example:
+        ```
+        {
+        "username": "vrum vrum",
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "vrum vrum",
             "first_name": "string",
             "last_name": "string",
             "email": "string@trs.com",
             "social_information": {
-              "id": 4,
-              "owner": 2,
-              "federal_unit": "AC",
-              "city": "34",
-              "income": "34.00",
-              "education": "EFC",
-              "job": "34",
-              "birth_date": "2018-04-06"
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "34",
+                "income": "34.00",
+                "education": "EFC",
+                "job": "34",
+                "birth_date": "2018-04-06"
             }
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).partial_update(
             request,
@@ -397,43 +457,46 @@ class UserViewset(mixins.CreateModelMixin,
 
     def update(self, request, pk=None, **kwargs):
         """
-          API endpoint that allows a social information to be edited.
-          ---
-          Body example:
-          ```
-          {
-            "username": "vrum vrum",
-            "first_name": "andre",
-            "last_name": "string",
-            "email": "string@trs.com"
-          }
-          ```
-          Response example:
-          ```
-          {
+        API endpoint that allows a social information to be edited.
+        ---
+        Body example:
+        ```
+        {
+        "username": "vrum vrum",
+        "first_name": "andre",
+        "last_name": "string",
+        "email": "string@trs.com"
+        }
+        ```
+        Response example:
+        ```
+        {
             "id": 1,
             "username": "vrum vrum",
             "first_name": "andre",
             "last_name": "string",
             "email": "string@trs.com",
             "social_information": {
-              "id": 4,
-              "owner": 2,
-              "federal_unit": "AC",
-              "city": "34",
-              "income": "34.00",
-              "education": "EFC",
-              "job": "34",
-              "birth_date": "2018-04-06"
+                "id": 4,
+                "owner": 2,
+                "federal_unit": "AC",
+                "city": "34",
+                "income": "34.00",
+                "education": "EFC",
+                "job": "34",
+                "birth_date": "2018-04-06"
             }
-          }
-          ```
+        }
+        ```
         """
         response = super(UserViewset, self).update(
             request,
             pk,
             **kwargs)
 
+        """
+        Treats the case where social information id doesn't exists 
+        """
         try:
             social_information_data = request.data['social_information']
             if social_information_data.get('id'):
@@ -458,9 +521,12 @@ class UserViewset(mixins.CreateModelMixin,
     @list_route(methods=['get'])
     def actual_user(self, request):
         """
-        Returns the actual user.
+        Returns the actual user logged.
         """
 
+        """
+        verify the credentials of user logged
+        """
         if request.user.is_authenticated:
             user = dict()
             user['id'] = request.user.id
@@ -494,6 +560,9 @@ class LoaderViewSet(ViewSet):
 
     @classmethod
     def __get_credentials(cls):
+        """
+        Obtain the credentials for user on json and decode them
+        """
         with open('.loader_credentials.json', 'r') as f:
             read_data = f.read()
 
@@ -509,6 +578,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['get'])
     def get_parliamentarians(self, request):
+        """
+        Obtain the list of parlamentarians if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             parliamentary_ids = []
@@ -527,6 +599,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_parliamentary(self, request):
+        """
+        Create the parlamentarian if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             parliamentary_dict = request.data.dict()
@@ -544,6 +619,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['get'])
     def get_propositions(self, request):
+         """
+        Obtain the list of propositions if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
 
@@ -572,6 +650,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_proposition(self, request):
+        """
+        Create the proposition if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
             proposition_dict = request.data.dict()
@@ -595,6 +676,9 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_vote(self, request):
+         """
+        Create the vote if user is authorized
+        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
 
@@ -637,13 +721,27 @@ class LoaderViewSet(ViewSet):
 class ParliamentaryViewset(mixins.RetrieveModelMixin,
                            mixins.ListModelMixin,
                            viewsets.GenericViewSet):
+    """
+    Description: ParliamentaryViewSet.
+    API endpoint that allows parliamentary
+    to be viewed, created, deleted or edited.
+    """
+
     serializer_class = ParliamentarySerializer
 
     def get_queryset(self):
+        """
+        Obtain a list of parliamentary objects
+        """
+
         queryset = Parliamentary.objects.all()
         return parliamentarians_filter(self, queryset)
 
     def list(self, request):
+        """
+        Set how the list of parliamentary will be shown
+        """
+
         response = super(ParliamentaryViewset, self).list(request)
 
         if request.user.is_authenticated:
@@ -663,6 +761,9 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
         return response
 
     def retrieve(self, request, pk=None):
+        """
+        Set how the list of parliamentary will be shown
+        """
         response = super(ParliamentaryViewset, self).retrieve(request, pk)
 
         if request.user.is_authenticated:
@@ -730,13 +831,27 @@ class ParliamentaryViewset(mixins.RetrieveModelMixin,
 class PropositionViewset(mixins.RetrieveModelMixin,
                          mixins.ListModelMixin,
                          viewsets.GenericViewSet):
+    """
+    Description: PropositionViewSet.
+    API endpoint that allows Proposition
+    to be viewed, created, deleted or edited.
+    """
+
     serializer_class = PropositionSerializer
 
     def get_queryset(self):
+        """
+        Obtain a list of propositions objects
+        """
+
         queryset = Proposition.objects.all().order_by('-last_update')
         return propositions_filter(self, queryset)
 
     def list(self, request):
+        """
+        Set how the list of propositions will be shown
+        """
+
         response = super(PropositionViewset, self).list(request)
 
         for proposition in response.data['results']:
@@ -770,6 +885,9 @@ class PropositionViewset(mixins.RetrieveModelMixin,
         return response
 
     def retrieve(self, request, pk=None):
+        """
+        Set how the list of parliamentary will be configured
+        """
         response = super(PropositionViewset, self).retrieve(request, pk)
 
         parliamentarians_total_votes = ParliamentaryVote.objects.filter(
@@ -946,7 +1064,9 @@ class PropositionViewset(mixins.RetrieveModelMixin,
 
     @detail_route(methods=['get'])
     def social_information_data(self, request, pk):
-
+        """
+        Returns all propositions according with your data.
+        """
         response = dict()
 
         parliamentarians_total_votes = ParliamentaryVote.objects.filter(
@@ -1009,9 +1129,10 @@ class PropositionViewset(mixins.RetrieveModelMixin,
 
         return Response(response, status=status.HTTP_200_OK)
 
-
 class UserVoteViewset(viewsets.ModelViewSet):
-
+    """
+    API endpoint that allows actions with the user vote.
+    """
     serializer_class = UserVoteSerializer
     queryset = UserVote.objects.all()
 
@@ -1025,6 +1146,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return user_votes_filter(self, queryset)
 
     def list(self, request):
+        """ Method that lists the votes and propositions with an previous analysis. """
         response = super(UserVoteViewset, self).list(request)
 
         for vote in response.data['results']:
@@ -1069,6 +1191,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def create(self, request):
+        """ Creates propositions. """
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1086,6 +1209,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def destroy(self, request, pk=None):
+        """ API endpoint that allows social information to be deleted. """
         extended_user = ExtendedUser.objects.get(user=request.user)
         if extended_user.should_update is False:
             extended_user.should_update = True
@@ -1095,6 +1219,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def retrieve(self, request, pk=None):
+        """ API endpoint that allows social information to be viewed. """
         response = super(UserVoteViewset, self).retrieve(request, pk)
 
         proposition = Proposition.objects.get(pk=response.data['proposition'])
@@ -1104,6 +1229,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def partial_update(self, request, pk=None, **kwargs):
+        """ API endpoint that allows a social information to be partial edited."""
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1119,6 +1245,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
         return response
 
     def update(self, request, pk=None, **kwargs):
+        """ API endpoint that allows a social information to be edited."""
         user_id = request.user.id
         request.data['user'] = user_id
 
@@ -1140,7 +1267,7 @@ class UserVoteViewset(viewsets.ModelViewSet):
 
 
 class CustomObtainToken(ObtainAuthToken):
-
+    """ Obtain the authentication token to make the referency to the user. """
     def post(self, request, *args, **kwargs):
         response = \
             super(CustomObtainToken, self).post(request, *args, **kwargs)
@@ -1163,6 +1290,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
     serializer_class = UserFollowingSerializer
     queryset = UserFollowing.objects.all().order_by('parliamentary')
 
+    """ Takes the query set and filters the users. """
     def get_queryset(self):
         if not self.request.user.is_anonymous:
             user = self.request.user
@@ -1172,6 +1300,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return user_following_filter(self, queryset)
 
+    """ Shows a list of the parliamentaries filtering by compatibility. """
     def list(self, request):
         response = super(UserFollowingViewset, self).list(request)
 
@@ -1195,6 +1324,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return response
 
+    """ Creates parliamentaries profiles, if it doesn't exists. """
     def create(self, request):
         try:
             user_id = request.user.id
@@ -1204,6 +1334,9 @@ class UserFollowingViewset(mixins.ListModelMixin,
                 user=request.user,
                 parliamentary__id=request.data['parliamentary']
             ):
+                """ The requester can only create profiles if it is authorized and
+                if the profile doesn't exists. 
+                """
                 response = {
                     'detail': 'Already exists.'
                 }
@@ -1223,6 +1356,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
 
         return response
 
+    """ Destroy a profile parliamentary, if it exists. """
     def destroy(self, request, pk=None):
         try:
             if UserFollowing.objects.filter(
@@ -1243,6 +1377,7 @@ class UserFollowingViewset(mixins.ListModelMixin,
                 }
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
+        """ The requester must be authorized. """
         except (IntegrityError, TypeError):
             response = {
                 'detail': 'Anauthorized.'
@@ -1297,10 +1432,10 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_active(self, request):
-        """
-        Returns parliamentarians in votes count order.
-        """
-
+    """
+    Returns parliamentarians in votes count order.
+    """
+    
         most_active = ParliamentaryVote.objects.filter(
             Q(option='Y') | Q(option='N')
         ).values('parliamentary').annotate(
@@ -1325,9 +1460,9 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_followed(self, request):
-        """
-        Returns parliamentarians in followers count order.
-        """
+    """
+    Returns parliamentarians in followers count order.
+    """
 
         most_followed = Parliamentary.objects.values('id').annotate(
             followers=Count('followers')
@@ -1342,6 +1477,9 @@ class StatisticViewset(viewsets.GenericViewSet):
                 parliamentary_obj
             ).data
 
+        """
+        Returns the most followed parliamentary.
+        """
         paginator = LimitOffsetPagination()
 
         page = paginator.paginate_queryset(most_followed, request)
@@ -1352,9 +1490,9 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_compatible(self, request):
-        """
-        Returns parliamentarians in compatibility order.
-        """
+    """
+    Returns parliamentarians in compatibility order.
+    """
 
         extended_user = ExtendedUser.objects.get(user=request.user)
 
@@ -1389,37 +1527,37 @@ class StatisticViewset(viewsets.GenericViewSet):
 
 
 class ContactUsViewset(mixins.CreateModelMixin,
-                       viewsets.GenericViewSet):
-    """Description: ContactUsViewset.
+                     viewsets.GenericViewSet):
+    """ 
     API endpoint that allows contact us
-     to be viewed, created, deleted or edited.
+    to be viewed, created, deleted or edited.
     """
     serializer_class = ContactUsSerializer
     class_name = ContactUs
     queryset = ContactUs.objects.all()
 
     def create(self, request):
-        """
-            API endpoint that allows all 'contact us' to be created.
-            ---
-            Body example:
+    """
+    API endpoint that allows all 'contact us' to be created.
+        ---
+        Body example:
             ```
-                {
-                    "topic": "title",
-                    "email": "email@email.com",
-                    "choice": "A",
-                    "text": "message"
-                }
+            {
+            "topic": "title",
+            "email": "email@email.com",
+            "choice": "A",
+            "text": "message"
+            }
             ```
-            Response example:
+        Response example:
             ```
-                {
-                    "id": 1,
-                    "topic": "title",
-                    "email": "email@email.com",
-                    "choice": "A",
-                    "text": "message"
-                }
+            {
+            "id": 1,
+            "topic": "title",
+            "email": "email@email.com",
+            "choice": "A",
+            "text": "message"
+            }
             ```
-        """
+    """
         return super(ContactUsViewset, self).create(request)
