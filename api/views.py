@@ -40,7 +40,7 @@ from .models import (
     SocialInformation, UserFollowing, UserVote, ContactUs
 )
 
-# permissions 
+# permissions
 from .permissions import SocialInformationPermissions, UserPermissions
 from .serializers import (
     CompatibilitySerializer, ParliamentarySerializer, PropositionSerializer,
@@ -360,7 +360,7 @@ class UserViewset(mixins.CreateModelMixin,
         user = User.objects.get(username=request.data['username'])
 
         """
-        Treats the case where social information id doesn't exists 
+        Treats the case where social information id doesn't exists
         """
         try:
             social_information_data = request.data['social_information']
@@ -495,7 +495,7 @@ class UserViewset(mixins.CreateModelMixin,
             **kwargs)
 
         """
-        Treats the case where social information id doesn't exists 
+        Treats the case where social information id doesn't exists
         """
         try:
             social_information_data = request.data['social_information']
@@ -619,11 +619,8 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['get'])
     def get_propositions(self, request):
-         """
-        Obtain the list of propositions if user is authorized
-        """
         if request.query_params.get('key') == \
-                LoaderViewSet.__get_credentials():
+            LoaderViewSet.__get_credentials():
 
             propositions = Proposition.objects.all().order_by('-last_update')
             propositions_list = []
@@ -676,9 +673,6 @@ class LoaderViewSet(ViewSet):
 
     @list_route(methods=['post'])
     def create_vote(self, request):
-         """
-        Create the vote if user is authorized
-        """
         if request.query_params.get('key') == \
                 LoaderViewSet.__get_credentials():
 
@@ -1377,7 +1371,6 @@ class UserFollowingViewset(mixins.ListModelMixin,
                 }
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
-        """ The requester must be authorized. """
         except (IntegrityError, TypeError):
             response = {
                 'detail': 'Anauthorized.'
@@ -1432,9 +1425,6 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_active(self, request):
-    """
-    Returns parliamentarians in votes count order.
-    """
     
         most_active = ParliamentaryVote.objects.filter(
             Q(option='Y') | Q(option='N')
@@ -1460,9 +1450,6 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_followed(self, request):
-    """
-    Returns parliamentarians in followers count order.
-    """
 
         most_followed = Parliamentary.objects.values('id').annotate(
             followers=Count('followers')
@@ -1490,9 +1477,6 @@ class StatisticViewset(viewsets.GenericViewSet):
 
     @list_route(methods=['get'])
     def most_compatible(self, request):
-    """
-    Returns parliamentarians in compatibility order.
-    """
 
         extended_user = ExtendedUser.objects.get(user=request.user)
 
@@ -1537,27 +1521,4 @@ class ContactUsViewset(mixins.CreateModelMixin,
     queryset = ContactUs.objects.all()
 
     def create(self, request):
-    """
-    API endpoint that allows all 'contact us' to be created.
-        ---
-        Body example:
-            ```
-            {
-            "topic": "title",
-            "email": "email@email.com",
-            "choice": "A",
-            "text": "message"
-            }
-            ```
-        Response example:
-            ```
-            {
-            "id": 1,
-            "topic": "title",
-            "email": "email@email.com",
-            "choice": "A",
-            "text": "message"
-            }
-            ```
-    """
         return super(ContactUsViewset, self).create(request)
